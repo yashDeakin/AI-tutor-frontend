@@ -5,8 +5,8 @@ import ChatPrompts from "./components/chat/chat-prompts";
 import { useScrollBottom } from "./hooks/use-scroll-bottom";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/sidebar/app-sidebar";
-import { Button } from "./components/ui/button";
-import { Star } from "lucide-react";
+// import { Button } from "./components/ui/button";
+// import { Star } from "lucide-react";
 import axios from "axios";
 
 export interface Message {
@@ -70,7 +70,7 @@ function App() {
   
       // Stream response character by character
       for (let i = 0; i < responseText.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 25));
+        await new Promise((resolve) => setTimeout(resolve, 0.1));
         setMessages((prev) =>
           prev.map((msg) =>
             msg.id === assistantMessageId
@@ -79,7 +79,8 @@ function App() {
           )
         );
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("API error:", error);
       setMessages((prev) =>
         prev.map((msg) =>
@@ -88,7 +89,8 @@ function App() {
             : msg
         )
       );
-    } finally {
+    }
+     finally {
       setIsStreaming(false);
     }
   };
@@ -111,11 +113,11 @@ function App() {
           <div className="ml-auto px-3">
             <div className="flex items-center gap-2 text-sm">
               <div className="hidden font-medium text-muted-foreground md:inline-block">
-                Edit Oct 08
+                Deakin University
               </div>
-              <Button variant="ghost" size="icon" className="h-7 w-7">
+              {/* <Button variant="ghost" size="icon" className="h-7 w-7">
                 <Star />
-              </Button>
+              </Button> */}
             </div>
           </div>
         </header>
