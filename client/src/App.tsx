@@ -56,29 +56,31 @@ function App() {
     try {
       setIsStreaming(true);
   
-      const res = await axios.post("http://127.0.0.1:5000/api/query", {
+      const res = await axios.post("http://10.72.191.93:8000/query", {
         query: message,
         collection_name: "chroma_db", // Make this dynamic if needed
       });
   
       // Updated to handle response correctly
       const responseText = res.data?.response;
-  
       if (!responseText || typeof responseText !== "string") {
         throw new Error("Invalid response from server");
       }
   
       // Stream response character by character
-      for (let i = 0; i < responseText.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 0.1));
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMessageId
-              ? { ...msg, text: responseText.slice(0, i + 1) }
-              : msg
-          )
-        );
-      }
+      const CHUNK_SIZE = 10;
+const CHUNK_DELAY = 10; // ms
+
+for (let i = 0; i < responseText.length; i += CHUNK_SIZE) {
+  await new Promise((resolve) => setTimeout(resolve, CHUNK_DELAY));
+  setMessages((prev) =>
+    prev.map((msg) =>
+      msg.id === assistantMessageId
+        ? { ...msg, text: responseText.slice(0, i + CHUNK_SIZE) }
+        : msg
+    )
+  );
+}
     } 
     catch (error) {
       console.error("API error:", error);
